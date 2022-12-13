@@ -29,7 +29,7 @@ class Weather extends React.Component {
       "process.env.<variable_name>". Make sure to .gitignore your .env file!
       Also remember to restart your server (i.e., re-run "npm start") whenever
       you change your .env file. */
-      const apiKey = '???';
+      const apiKey = 'process.env.REACT_APP_WEATHER_API';
 
       const params = {
         lat: location.coords.latitude,
