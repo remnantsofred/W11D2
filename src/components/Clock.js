@@ -1,49 +1,59 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 
-export class ClockToggle extends React.Component {
-  render () {
-    return (
-      <button 
-        type="button"
-        className="clock-toggle" 
-        onClick={this.props.toggleClock}
-      >
-        Toggle Clock
-      </button>
-    )
-  }
+export function ClockToggle (props){
+  return (
+    <button 
+      type="button"
+      className="clock-toggle" 
+      onClick={props.toggleClock}
+    >
+      Toggle Clock
+    </button>
+  )
+  
 } 
 
-class Clock extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      time: new Date(),
-    };
-  }
+function Clock (props){
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     time: new Date(),
+  //   };
+  // }
+  const [time, setTime] = useState(new Date());
   
-  componentDidMount() {
-    this.interval = setInterval(this.tick, 1000);
-  }
+  // componentDidMount() {
+  //   this.interval = setInterval(this.tick, 1000);
+  // }
+
+  useEffect(()=>{
+    const interval = setInterval(tick, 1000);
+    return ()=>{
+      clearInterval(interval);
+      // console.log("cleared interval! interval clearing! wow!")
+    }
+  }, [])
   
-  componentWillUnmount() {
-    console.log("Clearing Clock interval!")
-    clearInterval(this.interval);
-  }
+  // componentWillUnmount() {
+  //   console.log("Clearing Clock interval!")
+  //   clearInterval(this.interval);
+  // }
+
   
-  tick = () => {
-    this.setState({ time: new Date() });
+  
+  const tick = () => {
+    setTime(new Date());
   }
 
-  render() {
-    let hours = this.state.time.getHours();
-    let minutes = this.state.time.getMinutes();
-    let seconds = this.state.time.getSeconds();
-    hours = (hours < 10) ? `0${hours}` : hours;
-    minutes = (minutes < 10) ? `0${minutes}` : minutes;
-    seconds = (seconds < 10) ? `0${seconds}` : seconds;
+  // render() {
+    // let hours = this.state.time.getHours();
+    // let minutes = this.state.time.getMinutes();
+    // let seconds = this.state.time.getSeconds();
+    // hours = (hours < 10) ? `0${hours}` : hours;
+    // minutes = (minutes < 10) ? `0${minutes}` : minutes;
+    // seconds = (seconds < 10) ? `0${seconds}` : seconds;
 
-    const timezone = this.state.time
+    const timezone = time
       .toTimeString() // Form: "14:39:07 GMT-0600 (PDT)"
       .replace(/[^A-Z]/g, "") // Strip out all but capitals
       .slice(3); // Eliminate initial GMT
@@ -57,7 +67,7 @@ class Clock extends React.Component {
               Time:
             </span>
             <span>
-              {hours}:{minutes}:{seconds} {timezone}
+              {time.getHours()}:{time.getMinutes()}:{time.getSeconds()} {timezone}
             </span>
           </p>
           <p>
@@ -65,13 +75,13 @@ class Clock extends React.Component {
               Date: 
             </span>
             <span>
-              {this.state.time.toDateString()}
+              {time.toDateString()}
             </span>
           </p>
         </div>
       </section>
     );
-  }
+  // }
 }
 
 export default Clock;
